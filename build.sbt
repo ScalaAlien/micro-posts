@@ -1,6 +1,6 @@
 import com.typesafe.config.{ Config, ConfigFactory }
 import scala.collection.JavaConverters._
-name := """micro-spots"""
+name := """micro-posts"""
 organization := "com.example"
 
 version := "1.0-SNAPSHOT"
