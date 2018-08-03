@@ -1,27 +1,16 @@
-@(userOpt: Option[User])(implicit messages: Messages, request: RequestHeader)
+@import b3.vertical.fieldConstructor
+
+@(userOpt: Option[User])(implicit messagesProvider: MessagesProvider, request: RequestHeader)
 
 <header>
     <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @if(userOpt.isEmpty) {
-                <a class="navbar-brand" href="@routes.HomeController.index()">@Messages("ApplicationName")</a>
-                } else {
-                <a class="navbar-brand" href="#">@Messages("ApplicationName")</a>
-                }
-            </div>
+            // 中略
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     @if(userOpt.isEmpty) {
-                    @* リンクの変更 *@
                     <li><a href="@routes.SignUpController.index()">@Messages("SignUp")</a></li>
-                    <li><a href="#">@Messages("LogIn")</a></li>
+                    <li><a href="@routes.AuthController.index()">@Messages("LogIn")</a></li>
                     } else {
                     <li><a href="#">@Messages("Users")</a></li>
                     <li class="dropdown">
@@ -31,7 +20,12 @@
                             <li><a href="#">@Messages("User")</a></li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a href="#">@Messages("LogOut")</a>
+                                @* ログアウト用のフォームとjavascriptの追加 *@
+                                @b3.formCSRF(routes.AuthController.logout(), 'name -> "logout", 'style -> "display:
+                                none") {
+                                @b3.submit() { @Messages("LogOut") }
+                                }
+                                <a href="#" onclick="document.logout.submit();">@Messages("LogOut")</a>
                             </li>
                         </ul>
                     </li>

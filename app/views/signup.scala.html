@@ -1,6 +1,6 @@
 @import b3.vertical.fieldConstructor
 
-@(signUpForm: Form[SignUp])(implicit messages: Messages, flash: Flash, request: RequestHeader)
+@(signUpForm: Form[SignUp])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
 @main(Messages("SingUp"), None) {
 <div class="text-center">
@@ -12,8 +12,7 @@
         <div class="alert alert-warning" role="alert">
             @Messages(error.message, error.args)
         </div>
-        }
-        @b3.formCSRF(routes.SignUpController.register()) {
+        } @b3.formCSRF(routes.SignUpController.register()) {
         @b3.text(signUpForm("name"), '_label -> "Name", 'placeholder -> "Name")
         @b3.email(signUpForm("email"), '_label -> "Email", 'placeholder -> "example@mail.com")
         @b3.password(signUpForm("password"), '_label -> "Password", 'placeholder -> "Password")
