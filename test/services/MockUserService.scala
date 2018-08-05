@@ -12,4 +12,12 @@ class MockUserService extends UserService {
   override def findByEmail(email: String)(implicit dbSession: DBSession): Try[Option[User]] =
     Success(Some(User(Some(1L), email, email, "xxx")))
 
+  // 追加
+  override def findAll(implicit dbSession: DBSession): Try[List[User]] =
+    Success(List(User(Some(1L), "test", "test@test.coml", "xxx")))
+
+  override def findById(id: Long)(implicit dbSession: DBSession): Try[Option[User]] = Try {
+    User.findById(id)
+  }
+
 }

@@ -17,12 +17,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             @userOpt.get.name <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">@Messages("User")</a></li>
+                            <li><a href="@routes.UsersController.index()">@Messages("Users")</a></li>
                             <li role="separator" class="divider"></li>
                             <li>
                                 @* ログアウト用のフォームとjavascriptの追加 *@
-                                @b3.formCSRF(routes.AuthController.logout(), 'name -> "logout", 'style -> "display:
-                                none") {
+                                @b3.formCSRF(routes.AuthController.logout(), 'name -> "logout", 'style -> "display: none") {
                                 @b3.submit() { @Messages("LogOut") }
                                 }
                                 <a href="#" onclick="document.logout.submit();">@Messages("LogOut")</a>

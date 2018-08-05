@@ -10,7 +10,6 @@ import scala.util.Try
 @Singleton
 class UserServiceImpl extends UserService {
 
-  // ユーザーの作成に成功した場合は、Success(AUTO_INCREMENTによるID値を返します)
   def create(user: User)(implicit dbSession: DBSession = AutoSession): Try[Long] = Try {
     User.create(user)
   }
@@ -19,5 +18,14 @@ class UserServiceImpl extends UserService {
     Try {
       User.where('email -> email).apply().headOption
     }
+
+  // 追加
+  override def findAll(implicit dbSession: DBSession): Try[List[User]] = Try {
+    User.findAll()
+  }
+
+  override def findById(id: Long)(implicit dbSession: DBSession): Try[Option[User]] = Try {
+    User.findById(id)
+  }
 
 }

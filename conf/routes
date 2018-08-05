@@ -1,10 +1,10 @@
-GET     /                           controllers.HomeController.index
+GET         /                       controllers.HomeController.index
+GET         /signup                 controllers.SignUpController.index
+POST        /signup/register        controllers.SignUpController.register
+GET         /auth                   controllers.AuthController.index
+POST        /auth/login             controllers.AuthController.login
+POST        /auth/logout            controllers.AuthController.logout
+GET         /users                  controllers.UsersController.index
 
-GET     /signup                     controllers.SignUpController.index
-POST    /signup/register            controllers.SignUpController.register
-
-GET     /auth                       controllers.AuthController.index
-POST    /auth/login                 controllers.AuthController.login
-POST    /auth/logout                controllers.AuthController.logout
-
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET         /users/:id              controllers.UsersController.show(id: Long)
+GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
