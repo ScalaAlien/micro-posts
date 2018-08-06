@@ -1,11 +1,13 @@
 package controllers
 
-import javax.inject._
+import javax.inject.{Inject, Singleton}
+
 import jp.t2v.lab.play2.auth.AuthenticationElement
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import services.UserService
+import skinny.Pagination
 
 @Singleton
 class UsersController @Inject()(val userService: UserService, components: ControllerComponents)
@@ -14,9 +16,8 @@ class UsersController @Inject()(val userService: UserService, components: Contro
     with AuthConfigSupport
     with AuthenticationElement {
 
-  def index: Action[AnyContent] = StackAction { implicit request =>
-    userService
-      .findAll
+  def index(page: Int): Action[AnyContent] = StackAction { implicit request =>
+    userService.findAll(Pagination(pageSize = 10, pageNo = page))
       .map { users =>
         Ok(views.html.users.index(loggedIn, users))
       }

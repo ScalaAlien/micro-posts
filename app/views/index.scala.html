@@ -1,4 +1,6 @@
-@(currentUserOpt: Option[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+@import b3.vertical.fieldConstructor
+
+@(currentUserOpt: Option[User], postForm: Form[String], microPosts: PagedItems[MicroPost])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
 @main(Messages("Home"), currentUserOpt) {
 
@@ -10,7 +12,22 @@
     </div>
 </div>
 } else {
-@currentUserOpt.get.name
+<div class="row">
+    @* 投稿用フォーム *@
+    <aside class="col-md-4">
+        @b3.formCSRF(routes.PostController.post()) {
+        @b3.textarea(postForm("content"), '_label -> "Content", 'placeholder -> "Content")
+        @b3.submit('class -> "btn btn-primary btn-block") {
+        @Messages("Post")
+        }
+        }
+    </aside>
+    <div class="col-xs-8">
+        @if(microPosts.items.nonEmpty){
+        @common.posts(currentUserOpt.get, microPosts)
+        }
+    </div>
+</div>
 }
 
 }

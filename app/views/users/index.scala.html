@@ -1,4 +1,4 @@
-@(currentUser: User, users: List[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+@(currentUser: User, users: PagedItems[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
 @main(Messages("Users"), Some(currentUser)) {
 

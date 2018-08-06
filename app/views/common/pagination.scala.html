@@ -1,0 +1,25 @@
+@(items: PagedItems[Any], call: Int => Call)
+
+<ul class="pagination">
+    @if(items.hasPrevious) {
+    <li><a href="@call(items.minPage)">First</a></li>
+    <li><a href="@call(items.currentPage - 1)">Prev</a></li>
+    } else {
+    <li class="disabled"><a href="#">First</a></li>
+    <li class="disabled"><a href="#">Prev</a></li>
+    }
+    @for(page <- items.minPage to items.maxPage) {
+    @if(page == items.currentPage) {
+    <li class="active"><a href="#">@page <span class="sr-only">(current)</span></a></li>
+    } else {
+    <li ><a href="@call(page)">@page</a></li>
+    }
+    }
+    @if(items.hasNext) {
+    <li><a href="@call(items.currentPage + 1)">Next</a></li>
+    <li><a href="@call(items.maxPage)">Last</a></li>
+    } else {
+    <li class="disabled"><a href="#">Next</a></li>
+    <li class="disabled"><a href="#">Last</a></li>
+    }
+</ul>
