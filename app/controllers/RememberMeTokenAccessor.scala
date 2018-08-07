@@ -3,6 +3,7 @@ package controllers
 import jp.t2v.lab.play2.auth._
 import play.api.libs.typedmap.TypedKey
 import play.api.mvc.{Cookie, RequestHeader, Result}
+import scala.language.postfixOps
 
 class RememberMeTokenAccessor(maxAge: Int) extends CookieTokenAccessor() {
 

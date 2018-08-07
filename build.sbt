@@ -42,4 +42,4 @@ flywayUrl := envConfig.value.getString("jdbcUrl")
 flywayUser := envConfig.value.getString("jdbcUserName")
 flywayPassword := envConfig.value.getString("jdbcPassword")
 
-
+scalacOptions ++= Seq("-feature")

@@ -11,6 +11,8 @@ import play.api.libs.typedmap.TypedKey
 import play.api.mvc._
 import services.UserService
 
+import scala.language.postfixOps
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
