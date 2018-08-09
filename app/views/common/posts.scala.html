@@ -19,6 +19,9 @@
             <div>
                 <p>@micropost.content</p>
             </div>
+            <div>
+                @favorite_micro_post.favorite_button(currentUser, micropost, userFollows)
+            </div>
             @* 削除用フォーム *@
             @if(currentUser.id.get == micropost.userId) {
             <div>

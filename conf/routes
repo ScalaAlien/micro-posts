@@ -5,14 +5,17 @@ GET     /auth                       controllers.AuthController.index
 POST    /auth/login                 controllers.AuthController.login
 POST    /auth/logout                controllers.AuthController.logout
 GET     /users                      controllers.UsersController.index(page: Int ?= 1)
-# 以下の一行を変更(pageの追加)
-GET         /users/:id                       controllers.UsersController.show(id: Long, page: Int)
-# 以下の一行を追加
-GET         /users/:userId/followers         controllers.UsersController.getFollowers(userId: Long, page: Int)
-# 以下の一行を追加
-GET         /users/:userId/followings        controllers.UsersController.getFollowings(userId: Long, page: Int)
+GET     /users/:id                       controllers.UsersController.show(id: Long, page: Int)
+
+GET     /users/:userId/followers         controllers.UsersController.getFollowers(userId: Long, page: Int)
+GET     /users/:userId/followings        controllers.UsersController.getFollowings(userId: Long, page: Int)
+
 POST    /users/:userId/follow            controllers.UserFollowController.follow(userId: Long)
 POST    /users/:userId/unfollow          controllers.UserFollowController.unFollow(userId: Long)
+
+POST    /users/:microPostId/favorite            controllers.FavoriteMicroPostController.follow(microPostId: Long)
+POST    /users/:microPostId/unfavorite          controllers.FavoriteMicroPostController.unFollow(microPostId: Long)
+
 POST    /posts                      controllers.PostController.post(page: Int ?= 1)
 POST    /posts/:id/delete           controllers.PostController.delete(id: Long, page: Int ?= 1)
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

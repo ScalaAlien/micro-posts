@@ -1,8 +1,8 @@
 package controllers
 
 import java.time.ZonedDateTime
-import javax.inject._
 
+import javax.inject._
 import jp.t2v.lab.play2.auth.AuthenticationElement
 import models.FavoriteMicroPost
 import play.api.Logger
@@ -19,10 +19,10 @@ class FavoriteMicroPostController @Inject()(val favoriteMicroPostService: Favori
     with AuthConfigSupport
     with AuthenticationElement {
 
-  def favorite(favoriteMicroPostId: Long): Action[AnyContent] = StackAction { implicit request =>
+  def favorite(microPostId: Long): Action[AnyContent] = StackAction { implicit request =>
     val currentUser = loggedIn
     val now         = ZonedDateTime.now()
-    val favoriteMicroPost  = FavoriteMicroPost(None, currentUser.id.get, favoriteMicroPostId, now, now)
+    val favoriteMicroPost  = FavoriteMicroPost(None, currentUser.id.get, microPostId, now, now)
     favoriteMicroPostService
       .create(favoriteMicroPost)
       .map { _ =>
@@ -37,10 +37,10 @@ class FavoriteMicroPostController @Inject()(val favoriteMicroPostService: Favori
       .getOrElse(InternalServerError(Messages("InternalError")))
   }
 
-  def unFavorite(userId: Long): Action[AnyContent] = StackAction { implicit request =>
+  def unFavorite(microPostId: Long): Action[AnyContent] = StackAction { implicit request =>
     val currentUser = loggedIn
     favoriteMicroPostService
-      .deleteBy(currentUser.id.get, userId)
+      .deleteBy(currentUser.id.get, microPostId)
       .map { _ =>
         Redirect(routes.HomeController.index())
       }

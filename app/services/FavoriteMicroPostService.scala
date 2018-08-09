@@ -1,6 +1,6 @@
 package services
 
-import models.{PagedItems, User, FavoriteMicroPost}
+import models._
 import scalikejdbc.{AutoSession, DBSession}
 import skinny.Pagination
 
@@ -10,22 +10,22 @@ trait FavoriteMicroPostService {
 
   def create(favoriteMicroPost: FavoriteMicroPost)(implicit dbSession: DBSession = AutoSession): Try[Long]
 
-  def findById(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[List[FavoriteMicroPost]]
+  def findById(microPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[List[FavoriteMicroPost]]
 
-  def findByFollowId(followId: Long)(implicit dbSession: DBSession = AutoSession): Try[Option[FavoriteMicroPost]]
+  def findByFavoriteMicroPostId(microPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Option[FavoriteMicroPost]]
 
-  def findFollowersByUserId(pagination: Pagination, userId: Long)(
+  def findUserByFavoriteMicroPostId(pagination: Pagination, microPostId: Long)(
     implicit dbSession: DBSession = AutoSession
   ): Try[PagedItems[User]]
 
-  def findFollowingsByUserId(pagination: Pagination, userId: Long)(
+  def findFavoriteMicroPostByUserId(pagination: Pagination, userId: Long)(
     implicit dbSession: DBSession = AutoSession
-  ): Try[PagedItems[User]]
+  ): Try[PagedItems[MicroPost]]
 
   def countByUserId(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long]
 
-  def countFavoriteMicroPostId(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long]
+  def countByByFavoriteMicroPostId(favoriteMicroPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long]
 
-  def deleteBy(userId: Long, followId: Long)(implicit dbSession: DBSession = AutoSession): Try[Int]
+  def deleteBy(userId: Long, favoriteMicroPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Int]
 
 }

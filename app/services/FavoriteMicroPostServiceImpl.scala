@@ -1,8 +1,7 @@
 package services
 
 import javax.inject.Singleton
-
-import models.{PagedItems, User, FavoriteMicroPost}
+import models.{FavoriteMicroPost, MicroPost, PagedItems, User}
 import scalikejdbc._
 import skinny.Pagination
 
@@ -11,28 +10,28 @@ import scala.util.Try
 @Singleton
 class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
 
-  override def create(userFollow: FavoriteMicroPost)(implicit dbSession: DBSession): Try[Long] = Try {
-    FavoriteMicroPost.create(userFollow)
+  override def create(favoriteMicroPost: FavoriteMicroPost)(implicit dbSession: DBSession): Try[Long] = Try {
+    FavoriteMicroPost.create(favoriteMicroPost)
   }
 
   override def findById(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[List[FavoriteMicroPost]] = Try {
     FavoriteMicroPost.where('userId -> userId).apply()
   }
 
-  override def findByFollowId(followId: Long)(implicit dbSession: DBSession = AutoSession): Try[Option[FavoriteMicroPost]] =
+  override def findByFavoriteMicroPostId(microPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Option[FavoriteMicroPost]] =
     Try {
-      FavoriteMicroPost.where('micro_posts_id -> microPostsId).apply().headOption
+      FavoriteMicroPost.where('microPostId -> microPostId).apply().headOption
     }
 
   // userIdのユーザーをフォローするユーザーの集合を取得する
-  override def findFollowersByUserId(pagination: Pagination, userId: Long)(
+  override def findUserByFavoriteMicroPostId(pagination: Pagination, favoriteMicroPostId: Long)(
     implicit dbSession: DBSession = AutoSession
   ): Try[PagedItems[User]] = {
-    countByFollowId(userId).map { size =>
+    countByByFavoriteMicroPostId(favoriteMicroPostId).map { size =>
       PagedItems(pagination, size,
         FavoriteMicroPost.allAssociations
           .findAllByWithLimitOffset(
-            sqls.eq(FavoriteMicroPost.defaultAlias.microPostsId, userId),
+            sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, favoriteMicroPostId),
             pagination.limit,
             pagination.offset,
             Seq(FavoriteMicroPost.defaultAlias.id.desc)
@@ -42,14 +41,10 @@ class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
     }
   }
 
-  override def countByFollowId(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long] = Try {
-    FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.microPostsId, userId))
-  }
-
   // userIdのユーザーがフォローしているユーザーの集合を取得する
-  override def findFollowingsByUserId(pagination: Pagination, userId: Long)(
+  override def findFavoriteMicroPostByUserId(pagination: Pagination, userId: Long)(
     implicit dbSession: DBSession = AutoSession
-  ): Try[PagedItems[User]] = {
+  ): Try[PagedItems[MicroPost]] = {
     // 全体の母数を取得する
     countByUserId(userId).map { size =>
       PagedItems(pagination, size,
@@ -60,7 +55,7 @@ class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
             pagination.offset,
             Seq(FavoriteMicroPost.defaultAlias.id.desc)
           )
-          .map(_.followUser.get)
+          .map(_.favoriteMicroPost.get)
       )
     }
   }
@@ -69,14 +64,18 @@ class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
     FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.userId, userId))
   }
 
-  override def deleteBy(userId: Long, microPostsId: Long)(implicit dbSession: DBSession = AutoSession): Try[Int] = Try {
-    val c     = FavoriteMicroPost.column
-    val count = FavoriteMicroPost.countBy(sqls.eq(c.userId, userId).and.eq(c.followId, microPostsId))
+  override def countByByFavoriteMicroPostId(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long] = Try {
+    FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, userId))
+  }
+
+  override def deleteBy(userId: Long, favoriteMicroPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Int] = Try {
+    val c = FavoriteMicroPost.column
+    val count = FavoriteMicroPost.countBy(sqls.eq(c.userId, userId).and.eq(c.microPostId, favoriteMicroPostId))
     if (count == 1) {
       FavoriteMicroPost.deleteBy(
         sqls
           .eq(FavoriteMicroPost.column.userId, userId)
-          .and(sqls.eq(FavoriteMicroPost.column.microPostsId, microPostsId))
+          .and(sqls.eq(FavoriteMicroPost.column.microPostId, favoriteMicroPostId))
       )
     } else 0
   }
