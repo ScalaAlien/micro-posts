@@ -13,8 +13,8 @@ GET     /users/:userId/followings        controllers.UsersController.getFollowin
 POST    /users/:userId/follow            controllers.UserFollowController.follow(userId: Long)
 POST    /users/:userId/unfollow          controllers.UserFollowController.unFollow(userId: Long)
 
-POST    /users/:microPostId/favorite            controllers.FavoriteMicroPostController.follow(microPostId: Long)
-POST    /users/:microPostId/unfavorite          controllers.FavoriteMicroPostController.unFollow(microPostId: Long)
+POST    /users/:microPostId/favorite            controllers.FavoriteMicroPostController.favorite(microPostId: Long)
+POST    /users/:microPostId/unfavorite          controllers.FavoriteMicroPostController.unFavorite(microPostId: Long)
 
 POST    /posts                      controllers.PostController.post(page: Int ?= 1)
 POST    /posts/:id/delete           controllers.PostController.delete(id: Long, page: Int ?= 1)

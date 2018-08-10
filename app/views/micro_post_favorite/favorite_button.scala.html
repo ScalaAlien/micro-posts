@@ -1,0 +1,17 @@
+@import b3.vertical.fieldConstructor
+
+@(microPost: MicroPost)(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+
+@if(!favoriteMicroPosts.exists(_.microPostId == microPost.id.get)) {
+    @b3.formCSRF(routes.FavoriteMicroPostController.favorite(microPost.id.get)) {
+        @b3.submit('class -> "btn btn-primary btn-block") {
+            @Messages("Favorite")
+        }
+    }
+} else {
+    @b3.formCSRF(routes.FavoriteMicroPostController.unFavorite(microPost.id.get)) {
+        @b3.submit('class -> "btn btn-primary btn-block") {
+            @Messages("UnFavorite")
+        }
+    }
+}

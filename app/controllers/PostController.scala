@@ -1,10 +1,10 @@
 package controllers
 
 import java.time.ZonedDateTime
-import javax.inject.{Inject, Singleton}
 
+import javax.inject.{Inject, Singleton}
 import jp.t2v.lab.play2.auth.AuthenticationElement
-import models.MicroPost
+import models.{FavoriteMicroPost, MicroPost}
 import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
@@ -16,6 +16,7 @@ import skinny.Pagination
 @Singleton
 class PostController @Inject()(val userService: UserService,
                                val microPostService: MicroPostService,
+                               val favoriteMicroPostService: FavoriteMicroPostService,
                                components: ControllerComponents)
   extends AbstractController(components)
     with I18nSupport
@@ -91,5 +92,4 @@ class PostController @Inject()(val userService: UserService,
       }
       .getOrElse(InternalServerError(Messages("InternalError")))
   }
-
 }

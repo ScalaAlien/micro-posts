@@ -12,8 +12,8 @@ import services.{FavoriteMicroPostService, UserService}
 
 @Singleton
 class FavoriteMicroPostController @Inject()(val favoriteMicroPostService: FavoriteMicroPostService,
-                                     val userService: UserService,
-                                     components: ControllerComponents)
+                                            val userService: UserService,
+                                            components: ControllerComponents)
   extends AbstractController(components)
     with I18nSupport
     with AuthConfigSupport
