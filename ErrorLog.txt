@@ -1,0 +1,25 @@
+
+The Java Development Kit (JDK) installation you have is not up to date.
+sbt requires at least version 6+, you have
+version 0
+
+Please go to http://www.oracle.com/technetwork/java/javase/downloads/ and download
+a valid JDK and install before running sbt.
+
+[info] Loading global plugins from C:\Users\Kosuke\.sbt\0.13\plugins
+[info] Loading project definition from C:\tools\cygwin\home\Kosuke\sources\micro-posts\project
+[info] Set current project to micro-posts (in build file:/C:/tools/cygwin/home/Kosuke/sources/micro-posts/)
+[info] Compiling 46 Scala sources and 1 Java source to C:\tools\cygwin\home\Kosuke\sources\micro-posts\target\scala-2.12\classes...
+[error] C:\tools\cygwin\home\Kosuke\sources\micro-posts\app\controllers\HomeController.scala:36: value map is not a member of models.PagedItems[models.MicroPost]
+[error] possible cause: maybe a semicolon is missing before `value map'?
+[error]               .map(favoriteMicroPostService.findByFavoriteMicroPostId(_.id.get)) { triedFavoritePosts =>
+[error]                ^
+[error] C:\tools\cygwin\home\Kosuke\sources\micro-posts\app\controllers\HomeController.scala:36: missing parameter type for expanded function ((x$1: <error>) => x$1.id.get)
+[error]               .map(favoriteMicroPostService.findByFavoriteMicroPostId(_.id.get)) { triedFavoritePosts =>
+[error]                                                                       ^
+[error] C:\tools\cygwin\home\Kosuke\sources\micro-posts\app\controllers\HomeController.scala:37: too many arguments (4) for method apply: (currentUserOpt: Option[models.User], postForm: play.api.data.Form[String], microPosts: models.PagedItems[models.MicroPost])(implicit messagesProvider: play.api.i18n.MessagesProvider, implicit flash: play.api.mvc.Flash, implicit request: play.api.mvc.RequestHeader)play.twirl.api.HtmlFormat.Appendable in object index
+[error]                 Ok(views.html.index(userOpt, postForm, pagedItems, triedFavoritePosts))
+[error]                                                                    ^
+[error] three errors found
+[error] (compile:compileIncremental) Compilation failed
+[error] Total time: 7 s, completed 2018/08/12 5:38:27

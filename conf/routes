@@ -10,6 +10,8 @@ GET     /users/:id                       controllers.UsersController.show(id: Lo
 GET     /users/:userId/followers         controllers.UsersController.getFollowers(userId: Long, page: Int)
 GET     /users/:userId/followings        controllers.UsersController.getFollowings(userId: Long, page: Int)
 
+GET     /favorite                        controllers.FavoriteMicroPostController.index(pager:Int)
+
 POST    /users/:userId/follow            controllers.UserFollowController.follow(userId: Long)
 POST    /users/:userId/unfollow          controllers.UserFollowController.unFollow(userId: Long)
 

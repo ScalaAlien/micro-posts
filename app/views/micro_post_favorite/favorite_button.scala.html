@@ -1,17 +1,44 @@
 @import b3.vertical.fieldConstructor
-
-@(microPost: MicroPost)(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
-
-@if(!favoriteMicroPosts.exists(_.microPostId == microPost.id.get)) {
-    @b3.formCSRF(routes.FavoriteMicroPostController.favorite(microPost.id.get)) {
-        @b3.submit('class -> "btn btn-primary btn-block") {
-            @Messages("Favorite")
+@(currentUser: User, posts: PagedItems[MicroPost])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+@main(Messages("Favorites"), Some(currentUser)) {
+<div class="panel panel-primary">
+    @if(posts.items.isEmpty) {
+    <div class="panel-heading">@Messages("NoFavorites")</div>
+    } else {
+    <div class="panel-heading">@Messages("Favorites")</div>
+    <div class="panel-body">
+        @for(micropost <- posts.items) {
+        <div class="media">
+            <div class="media-left">
+                <img class="media-object img-rounded" src="@common.gravatarUrl(micropost.user.map(_.email).get)?s=50&amp;r=g&amp;d=identicon" alt="">
+            </div>
+            <div class="media-body">
+                <div>
+                    <a href="@routes.UsersController.show(micropost.userId, 1)">
+                        @micropost.user.map(_.name).get</a>
+                    <span class="text-muted">posted at @micropost.createAt</span>
+                </div>
+                <div>
+                    <p>@micropost.content</p>
+                </div>
+                <div class="btn-group" style="display: inline-flex">
+                    @b3.formCSRF(routes.FavoriteMicroPostController.unFavorite(micropost.id.get)) {
+                    @b3.submit('class -> "btn btn-warning btn-xs", 'style -> "margin-right: 5px;") {
+                    @Messages("FavoriteRemove")
+                    }
+                    }
+                    @if(currentUser.id.get == micropost.userId) {
+                    @b3.formCSRF(routes.PostController.delete(micropost.id.get, 1)) {
+                    @b3.submit('class -> "btn btn-danger btn-xs") {
+                    @Messages("Delete")
+                    }
+                    }
+                    }
+                </div>
+            </div>
+        </div>
         }
+    </div>
     }
-} else {
-    @b3.formCSRF(routes.FavoriteMicroPostController.unFavorite(microPost.id.get)) {
-        @b3.submit('class -> "btn btn-primary btn-block") {
-            @Messages("UnFavorite")
-        }
-    }
+</div>
 }

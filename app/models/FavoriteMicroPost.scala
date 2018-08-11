@@ -45,8 +45,8 @@ object FavoriteMicroPost extends SkinnyCRUDMapper[FavoriteMicroPost] {
                        n: ResultName[FavoriteMicroPost]): FavoriteMicroPost =
     autoConstruct(rs, n, "user", "favoriteMicroPost")
 
-  def create(userFollow: FavoriteMicroPost)(implicit session: DBSession): Long =
-    createWithAttributes(toNamedValues(userFollow): _*)
+  def create(favoriteMicroPost: FavoriteMicroPost)(implicit session: DBSession): Long =
+    createWithAttributes(toNamedValues(favoriteMicroPost): _*)
 
   private def toNamedValues(record: FavoriteMicroPost): Seq[(Symbol, Any)] =
     Seq(

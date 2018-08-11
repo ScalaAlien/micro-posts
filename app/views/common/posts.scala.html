@@ -19,8 +19,19 @@
             <div>
                 <p>@micropost.content</p>
             </div>
-            <div>
-                @micro_post_favorite.favorite_button(micropost)
+            <div class="btn-group" style="display: inline-flex">
+                @b3.formCSRF(routes.FavoriteMicroPostController.unFavorite(micropost.id.get)) {
+                @b3.submit('class -> "btn btn-warning btn-xs", 'style -> "margin-right: 5px;") {
+                @Messages("FavoriteRemove")
+                }
+                }
+                @if(currentUser.id.get == micropost.userId) {
+                @b3.formCSRF(routes.PostController.delete(micropost.id.get, 1)) {
+                @b3.submit('class -> "btn btn-danger btn-xs") {
+                @Messages("Delete")
+                }
+                }
+                }
             </div>
             @* 削除用フォーム *@
             @if(currentUser.id.get == micropost.userId) {
