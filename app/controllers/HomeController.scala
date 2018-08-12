@@ -32,20 +32,20 @@ class HomeController @Inject()(val userService: UserService,
         microPostService
           .findAllByWithLimitOffset(Pagination(10, page), user.id.get)
           .map { pagedItems =>
-            pagedItems
-              .map(favoriteMicroPostService.findByFavoriteMicroPostId(_.id.get)) { triedFavoritePosts =>
-                Ok(views.html.index(userOpt, postForm, pagedItems, triedFavoritePosts))
-              }
-              .recover {
-                case e: Exception =>
-                  Logger.error(s"occurred error", e)
-                  Redirect(routes.HomeController.index(page))
-                    .flashing("failure" -> Messages("InternalError"))
-              }.getOrElse(InternalServerError(Messages("InternalError")))
-          }.getOrElse(InternalServerError(Messages("InternalError")))
+            val favoritePosts = favoriteMicroPostService.findById(user.id.get).get
+            Ok(views.html.index(userOpt, postForm, pagedItems, favoritePosts))
+          }
+          .recover {
+            case e: Exception =>
+              Logger.error(s"occurred error", e)
+              Redirect(routes.HomeController.index(page))
+                .flashing("failure" -> Messages("InternalError"))
+          }
+          .getOrElse(InternalServerError(Messages("InternalError")))
       }
       .getOrElse(
-        Ok(views.html.index(userOpt, postForm, PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
+        Ok(views.html.index(userOpt, postForm, PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost],List.empty[MicroPost])))
       )
   }
+
 }

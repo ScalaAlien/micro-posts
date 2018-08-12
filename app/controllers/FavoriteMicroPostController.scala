@@ -20,28 +20,6 @@ class FavoriteMicroPostController @Inject()(val favoriteMicroPostService: Favori
     with AuthConfigSupport
     with AuthenticationElement {
 
-  def index(page: Int): Action[AnyContent] = StackAction { implicit request =>
-    val currentUser: User = loggedIn
-    val triedFavoritePosts = favoriteMicroPostService.findFavoriteMicroPostByUserId(Pagination(10,page),currentUser.id.get)
-    (for {
-      favoritePosts: PagedItems[MicroPost] <- triedFavoritePosts
-    } yield {
-      Ok(
-        views.html.micro_post_favorite.favorite_button(
-          loggedIn,
-          favoritePosts
-        )
-      )
-    })
-      .recover {
-        case e: Exception =>
-          Logger.error("occurred error", e)
-          Redirect(routes.FavoriteMicroPostController.index(10))
-            .flashing("failure" -> Messages("InternalError"))
-      }
-      .getOrElse(InternalServerError(Messages("InternalError")))
-  }
-
   def favorite(microPostId: Long): Action[AnyContent] = StackAction { implicit request =>
     val currentUser = loggedIn
     val now = ZonedDateTime.now()
