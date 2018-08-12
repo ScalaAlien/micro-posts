@@ -44,7 +44,7 @@ class HomeController @Inject()(val userService: UserService,
           .getOrElse(InternalServerError(Messages("InternalError")))
       }
       .getOrElse(
-        Ok(views.html.index(userOpt, postForm, PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost],List.empty[MicroPost])))
+        Ok(views.html.index(userOpt, postForm, PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
       )
   }
 

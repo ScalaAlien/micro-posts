@@ -92,4 +92,29 @@ class PostController @Inject()(val userService: UserService,
       }
       .getOrElse(InternalServerError(Messages("InternalError")))
   }
+
+
+  def getFavorite(page: Int) = StackAction { implicit request =>
+    val triedFavoritePostList = favoriteMicroPostService.findById(loggedIn.id.get)
+    val pagination           = Pagination(10, page)
+    val triedFavoritePost       = favoriteMicroPostService.findFavoriteMicroPostByUserId(pagination, loggedIn.id.get)
+    (for {
+      favoritePostList <- triedFavoritePostList
+      favoritePost <-  triedFavoritePost
+    } yield {
+      Ok(
+        views.html.common.posts(
+          loggedIn,
+          favoritePost,
+          favoritePostList
+        )
+      )
+    }).recover {
+      case e: Exception =>
+        Logger.error("occurred error", e)
+        Redirect(routes.UsersController.index())
+          .flashing("failure" -> Messages("InternalError"))
+    }
+      .getOrElse(InternalServerError(Messages("InternalError")))
+  }
 }

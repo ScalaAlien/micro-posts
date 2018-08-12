@@ -24,14 +24,14 @@ class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
     }
 
   // userIdのユーザーをフォローするユーザーの集合を取得する
-  override def findUserByFavoriteMicroPostId(pagination: Pagination, favoriteMicroPostId: Long)(
+  override def findUserByFavoriteMicroPostId(pagination: Pagination, microPostId: Long)(
     implicit dbSession: DBSession = AutoSession
   ): Try[PagedItems[User]] = {
-    countByByFavoriteMicroPostId(favoriteMicroPostId).map { size =>
+    countByByFavoriteMicroPostId(microPostId).map { size =>
       PagedItems(pagination, size,
         FavoriteMicroPost.allAssociations
           .findAllByWithLimitOffset(
-            sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, favoriteMicroPostId),
+            sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, microPostId),
             pagination.limit,
             pagination.offset,
             Seq(FavoriteMicroPost.defaultAlias.id.desc)
@@ -64,8 +64,8 @@ class FavoriteMicroPostServiceImpl extends FavoriteMicroPostService {
     FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.userId, userId))
   }
 
-  override def countByByFavoriteMicroPostId(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long] = Try {
-    FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, userId))
+  override def countByByFavoriteMicroPostId(favoriteMicroPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Long] = Try {
+    FavoriteMicroPost.allAssociations.countBy(sqls.eq(FavoriteMicroPost.defaultAlias.microPostId, favoriteMicroPostId))
   }
 
   override def deleteBy(userId: Long, favoriteMicroPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Int] = Try {

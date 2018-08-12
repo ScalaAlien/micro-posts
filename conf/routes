@@ -19,3 +19,5 @@ POST    /users/:microPostId/unfavorite          controllers.FavoriteMicroPostCon
 POST    /posts                      controllers.PostController.post(page: Int ?= 1)
 POST    /posts/:id/delete           controllers.PostController.delete(id: Long, page: Int ?= 1)
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+GET     /posts                      controllers.PostController.getFavorite(page: Int ?= 1)

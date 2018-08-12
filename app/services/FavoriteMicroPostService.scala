@@ -10,7 +10,7 @@ trait FavoriteMicroPostService {
 
   def create(favoriteMicroPost: FavoriteMicroPost)(implicit dbSession: DBSession = AutoSession): Try[Long]
 
-  def findById(microPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[List[FavoriteMicroPost]]
+  def findById(userId: Long)(implicit dbSession: DBSession = AutoSession): Try[List[FavoriteMicroPost]]
 
   def findByFavoriteMicroPostId(microPostId: Long)(implicit dbSession: DBSession = AutoSession): Try[Option[FavoriteMicroPost]]
 
