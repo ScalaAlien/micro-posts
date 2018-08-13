@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 import jp.t2v.lab.play2.auth.OptionalAuthElement
-import models.{MicroPost, PagedItems}
+import models.{FavoriteMicroPost, MicroPost, PagedItems}
 import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
@@ -44,7 +44,7 @@ class HomeController @Inject()(val userService: UserService,
           .getOrElse(InternalServerError(Messages("InternalError")))
       }
       .getOrElse(
-        Ok(views.html.index(userOpt, postForm, PagedItems(Pagination(10, page), 0, Seq.empty[MicroPost])))
+        InternalServerError(Messages("InternalError"))
       )
   }
 

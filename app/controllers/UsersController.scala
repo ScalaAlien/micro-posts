@@ -1,19 +1,19 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import jp.t2v.lab.play2.auth.AuthenticationElement
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import services.{MicroPostService, UserFollowService, UserService}
+import services.{FavoriteMicroPostService, MicroPostService, UserFollowService, UserService}
 import skinny.Pagination
 
 @Singleton
 class UsersController @Inject()(val userService: UserService,
                                 val microPostService: MicroPostService,
                                 val userFollowService: UserFollowService,
+                                val favoriteMicroPostService: FavoriteMicroPostService,
                                 components: ControllerComponents)
   extends AbstractController(components)
     with I18nSupport
@@ -42,15 +42,17 @@ class UsersController @Inject()(val userService: UserService,
     val triedMicroPosts     = microPostService.findByUserId(pagination, userId)
     val triedFollowingsSize = userFollowService.countByUserId(userId)
     val triedFollowersSize  = userFollowService.countByFollowId(userId)
+    val triedFavoritePosts = favoriteMicroPostService.findById(userId)
     (for {
       userOpt        <- triedUserOpt
       userFollows    <- triedUserFollows
       microPosts     <- triedMicroPosts
       followingsSize <- triedFollowingsSize
       followersSize  <- triedFollowersSize
+      favoritePosts <- triedFavoritePosts
     } yield {
       userOpt.map { user =>
-        Ok(views.html.users.show(loggedIn, user, userFollows, microPosts, followingsSize, followersSize))
+        Ok(views.html.users.show(loggedIn, user, userFollows, microPosts, followingsSize, followersSize, favoritePosts))
       }.get
     }).recover {
       case e: Exception =>

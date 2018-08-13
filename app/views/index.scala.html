@@ -1,6 +1,6 @@
 @import b3.vertical.fieldConstructor
 
-@(currentUserOpt: Option[User], postForm: Form[String], microPosts: PagedItems[MicroPost], favoritePosts:List[FavoriteMicroPost])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+@(currentUserOpt: Option[User], postForm: Form[String], microPosts: PagedItems[MicroPost], favoritePosts: List[FavoriteMicroPost])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
 @main(Messages("Home"), currentUserOpt) {
 
