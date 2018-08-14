@@ -6,6 +6,6 @@ CREATE TABLE `favorite_micro_posts` (
   `update_at` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(`id`),
   FOREIGN KEY (`user_id`) REFERENCES users(`id`),
-  FOREIGN KEY (`micro_posts_id`) REFERENCES users(`id`),
+  FOREIGN KEY (`micro_posts_id`) REFERENCES micro_posts(`id`),
   UNIQUE(`user_id`, `micro_posts_id`)
 ) ENGINE=InnoDB;
